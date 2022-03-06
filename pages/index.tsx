@@ -144,8 +144,8 @@ const Home: NextPage = () => {
                       ? pokemon.sprites.other['official-artwork'].front_default
                       : '/assets/images/pokeball.png'
                   }
-                  width='50'
-                  height='50'
+                  width='20'
+                  height='20'
                   layout='responsive'
                 />
                 <CardContent sx={{ marginTop: '50px', textAlign: 'center' }}>
