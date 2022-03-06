@@ -1,6 +1,11 @@
 .cardPokemon{
   margin: 0 auto;
   padding: 25px;
+  position: relative;
+  top: 50vh;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .avatarPokemon{
@@ -11,12 +16,6 @@
 .cardActions{
   display: flex;
   place-content: space-evenly;
-}
-
-.mainDiv{
-  position: relative;
-  top: 50%;
-  transform: translateY(25%);
 }
 
 .doubleBorder {
@@ -58,4 +57,22 @@
   z-index: 1;
   left: -2.5vh;
   top: -2vh;
+}
+
+.mainDiv{
+  height: 100vh;
+}
+
+.subDiv{
+  height: 50vh;
+  background-color: #fa4040;
+}
+
+.mainDiv::after{
+  position: absolute;
+  content: ". ";
+  display: table;
+  width: 100%;
+  background-color: #372d2d;
+  z-index: -1;
 }

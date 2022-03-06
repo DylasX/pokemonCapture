@@ -19,18 +19,6 @@ a {
   box-sizing: border-box;
 }
 
-#__next{
-  background-color: #fa4040;
-}
-
-
-#__next::after{
-  content: ". ";
-  display: table;
-  width: 100%;
-  background-color: #372d2d;
-}
-
 .footer {
   position: fixed;
   left: 0;
