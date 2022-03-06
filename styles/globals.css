@@ -1,9 +1,13 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: url('../public/assets/Sora/Sora-Bold.ttf');
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: OpenSans, sans-serif !important;
 }
 
 a {
@@ -13,4 +17,29 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+#__next{
+  background-color: #fa4040;
+}
+
+
+#__next::after{
+  content: ". ";
+  display: table;
+  width: 100%;
+  background-color: #372d2d;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #2b2626;
+  color: white;
+  text-align: center;
+  display: inline-flex;
+  place-content: space-between;
+  padding: 15px;
 }
