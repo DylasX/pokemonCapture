@@ -9,6 +9,7 @@ import {
   CardActionArea,
   CardActions,
   Grid,
+  LinearProgress,
   Modal,
   Snackbar,
 } from '@mui/material';
@@ -25,7 +26,10 @@ interface PokemonInterface {
   id: number;
   height: number;
   sprites: Record<string, any>;
+  totalHp: number;
 }
+
+type Status = 'success' | 'warning' | 'error';
 
 interface CapturePokemon {
   id: number;
@@ -36,6 +40,7 @@ const Home: NextPage = () => {
     name: '',
     id: 0,
     height: 0,
+    totalHp: 0,
     sprites: {
       other: {
         front_default: {
@@ -50,6 +55,8 @@ const Home: NextPage = () => {
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [captured, setCaptured] = useState<any>({ id: 0 });
+  const [currentHpProgress, setCurrentHpProgress] = useState<number>(100);
+  const [statusHp, setStatusHp] = useState<Status>('success');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleOpenSnack = () => setOpenSnack(true);
@@ -60,6 +67,7 @@ const Home: NextPage = () => {
       name: '',
       id: 0,
       height: 0,
+      totalHp: 0,
       sprites: {
         other: {
           front_default: {
@@ -99,10 +107,35 @@ const Home: NextPage = () => {
     }
   };
 
+  const calculateDamage = (damage: number) => {
+    if (currentHpProgress > 0) {
+      let newHp = pokemon.totalHp - damage;
+      setPokemon({ ...pokemon, totalHp: newHp });
+      newHp = (newHp * currentHpProgress) / pokemon.totalHp;
+      setCurrentHpProgress(newHp);
+      if (newHp <= 0) {
+        newPokemon();
+      }
+      if (currentHpProgress <= 70 && currentHpProgress >= 30) {
+        setStatusHp('warning');
+      }
+      if (currentHpProgress <= 35) {
+        setStatusHp('error');
+      }
+    }
+  };
+
   useEffect(() => {
     fetch(`${baseUrlApi}pokemon/${generatePokemon}`)
       .then((response) => response.json())
-      .then((data) => setPokemon(data));
+      .then((data) => {
+        setPokemon({
+          ...data,
+          totalHp: Math.floor(Math.random() * (200 - 100)) + 100,
+        });
+        setCurrentHpProgress(100);
+        setStatusHp('success');
+      });
   }, [generatePokemon]);
 
   return (
@@ -148,6 +181,11 @@ const Home: NextPage = () => {
                   height='20'
                   layout='responsive'
                 />
+                <LinearProgress
+                  variant='determinate'
+                  color={statusHp}
+                  value={currentHpProgress}
+                />
                 <CardContent sx={{ marginTop: '50px', textAlign: 'center' }}>
                   <Typography
                     gutterBottom
@@ -166,38 +204,64 @@ const Home: NextPage = () => {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              <CardActions className={styles.cardActions}>
-                {captured[pokemon.id] ? (
-                  <Button
-                    size='small'
-                    sx={{ minWidth: '100px', fontFamily: 'OpenSans' }}
-                    variant='outlined'
-                    color='error'
-                    onClick={newPokemon}
+              <CardActions>
+                <Grid container spacing={2} sx={{ textAlign: 'center' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    sx={{
+                      display: 'inline-flex',
+                      flexGrow: 1,
+                      placeContent: 'center',
+                    }}
                   >
-                    New one
-                  </Button>
-                ) : (
-                  <Button
-                    size='small'
-                    onClick={handleOpen}
-                    sx={{ minWidth: '100px', fontFamily: 'OpenSans' }}
-                    variant='outlined'
-                    color='error'
-                  >
-                    Capture
-                  </Button>
-                )}
-
-                <Button
-                  size='small'
-                  sx={{ minWidth: '100px', fontFamily: 'OpenSans' }}
-                  variant='outlined'
-                  color='error'
-                  onClick={newPokemon}
-                >
-                  Run
-                </Button>
+                    {captured[pokemon.id] ? (
+                      <Button
+                        size='small'
+                        sx={{ fontFamily: 'OpenSans', margin: '5px' }}
+                        variant='outlined'
+                        color='error'
+                        onClick={newPokemon}
+                      >
+                        New one
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          size='small'
+                          onClick={handleOpen}
+                          sx={{ fontFamily: 'OpenSans', margin: '5px' }}
+                          variant='outlined'
+                          color='error'
+                        >
+                          Capture
+                        </Button>
+                        <Button
+                          size='small'
+                          sx={{ fontFamily: 'OpenSans', margin: '5px' }}
+                          variant='outlined'
+                          color='error'
+                          onClick={() =>
+                            calculateDamage(Math.floor(Math.random() * 50) + 1)
+                          }
+                        >
+                          Attack
+                        </Button>
+                      </>
+                    )}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      size='small'
+                      sx={{ fontFamily: 'OpenSans' }}
+                      variant='outlined'
+                      color='error'
+                      onClick={newPokemon}
+                    >
+                      Run
+                    </Button>
+                  </Grid>
+                </Grid>
               </CardActions>
             </Card>
           </Grid>

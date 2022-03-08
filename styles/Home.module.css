@@ -13,10 +13,6 @@
   right: 45%;
 }
 
-.cardActions{
-  display: flex;
-  place-content: space-evenly;
-}
 
 .doubleBorder {
   border: 4px solid #372d2d;
