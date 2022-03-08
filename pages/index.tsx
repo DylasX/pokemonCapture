@@ -216,15 +216,7 @@ const Home: NextPage = () => {
                     }}
                   >
                     {captured[pokemon.id] ? (
-                      <Button
-                        size='small'
-                        sx={{ fontFamily: 'OpenSans', margin: '5px' }}
-                        variant='outlined'
-                        color='error'
-                        onClick={newPokemon}
-                      >
-                        New one
-                      </Button>
+                      ''
                     ) : (
                       <>
                         <Button
