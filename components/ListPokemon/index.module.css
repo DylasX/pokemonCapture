@@ -1,0 +1,12 @@
+.cardPokemon{
+    margin: 0 auto;
+    padding: 25px;
+    position: relative;
+    
+}
+
+.doubleBorder {
+    border: 4px solid #372d2d;
+    padding: 2em;
+    position: relative;
+}
